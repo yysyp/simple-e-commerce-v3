@@ -1,0 +1,89 @@
+<config xmlns='http://www.ehcache.org/v3'>
+    <!-- 持久化 路径 -->
+    <persistence directory="./tmp/Ehcache3"/>
+
+    <!-- 缓存模版,此处为了显示其用法,也可以不用模版直接在cache中配置与模版参数相同 -->
+    <cache-template name="oneHourTemplate">
+        <!--        <key-type>java.lang.String</key-type>-->
+        <!--        <value-type>java.lang.String</value-type>-->
+        <expiry>
+            <!-- 单位默认为秒当用秒作单位时,可以不填-->
+            <ttl unit="hours">1</ttl>
+        </expiry>
+        <resources>
+            <!-- 单位默认为entries当用entries作单位时,可以不填-->
+            <heap>100</heap>
+            <offheap unit="MB">5</offheap>
+            <!-- persistent 默认为false可以不填-->
+            <disk unit="MB">1024</disk>
+        </resources>
+    </cache-template>
+
+    <cache-template name="tenMinutesTemplate">
+        <!--        <key-type>java.lang.String</key-type>-->
+        <!--        <value-type>java.lang.String</value-type>-->
+        <expiry>
+            <!-- 单位默认为秒当用秒作单位时,可以不填-->
+            <ttl unit="minutes">10</ttl>
+        </expiry>
+        <resources>
+            <!-- 单位默认为entries当用entries作单位时,可以不填-->
+            <heap>100</heap>
+            <offheap unit="MB">5</offheap>
+            <!-- persistent 默认为false可以不填-->
+            <disk unit="MB">1024</disk>
+        </resources>
+    </cache-template>
+
+    <!-- 缓存对象,如果使用了模版会覆盖模版中的内容,使用uses-template=""来引用模版 -->
+    <cache alias="indexArticleList" uses-template="oneHourTemplate">
+        <!--        <key-type>java.lang.Integer</key-type>-->
+        <!--        <value-type>com.github.pagehelper.PageInfo</value-type>-->
+        <!--        <expiry>-->
+        <!--            <!–此处会覆盖模版中的(TTL)配置 –>-->
+        <!--            <tti>60</tti>-->
+        <!--        </expiry>-->
+        <!--        <resources>-->
+        <!--            <disk unit="MB" persistent="true"> 500</disk>-->
+        <!--        </resources>-->
+        <!-- 没有研究这块,暂时先不管
+        <eviction-advisor></eviction-advisor>
+        -->
+    </cache>
+
+    <cache alias="articleDetailsBig" uses-template="oneHourTemplate">
+        <!--        <key-type>java.lang.Long</key-type>-->
+        <!--        <value-type>com.coderbbb.blogv2.database.dto.WebsiteArticleDTO</value-type>-->
+    </cache>
+    <cache alias="cacheHtml" uses-template="oneHourTemplate" />
+    <cache alias="articleDo" uses-template="tenMinutesTemplate">
+        <!--        <key-type>java.lang.Long</key-type>-->
+        <!--        <value-type>com.coderbbb.blogv2.database.dos.ArticleDO</value-type>-->
+    </cache>
+    <cache alias="articleKeywords" uses-template="oneHourTemplate">
+        <!--        <key-type>java.lang.Long</key-type>-->
+        <!--        <value-type>java.lang.String</value-type>-->
+    </cache>
+    <cache alias="websiteConfig" uses-template="oneHourTemplate">
+        <!--        <key-type>java.lang.String</key-type>-->
+        <!--        <value-type>com.coderbbb.blogv2.database.dos.WebsiteConfigDO</value-type>-->
+    </cache>
+    <cache alias="randomArticle" uses-template="oneHourTemplate">
+        <!--        <key-type>java.lang.Long</key-type>-->
+        <!--        <value-type>java.util.List</value-type>-->
+    </cache>
+    <cache alias="cacheUserAgent" uses-template="tenMinutesTemplate">
+        <!--        <key-type>java.lang.String</key-type>-->
+        <!--        <value-type>java.lang.Boolean</value-type>-->
+    </cache>
+    <cache alias="authorInfo" uses-template="oneHourTemplate" />
+    <cache alias="relationArticleInfo" uses-template="oneHourTemplate" />
+    <cache alias="userAnaData" uses-template="tenMinutesTemplate" />
+    <cache alias="userCache" uses-template="tenMinutesTemplate" />
+    <cache alias="indexTag" uses-template="oneHourTemplate" />
+    <cache alias="hotArticle" uses-template="oneHourTemplate" />
+    <cache alias="recentArticle" uses-template="oneHourTemplate" />
+    <cache alias="hotBook" uses-template="oneHourTemplate" />
+
+
+</config>

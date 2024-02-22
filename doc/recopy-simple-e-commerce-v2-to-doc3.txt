@@ -1,0 +1,10 @@
+
+set "doc3-simple-e-commerce-v3=..\doc3\3-learn\33-coding\337-mytool-demo-snippet-code\simple-e-commerce-v3"
+
+rd /S /Q %doc3-simple-e-commerce-v3%\
+@rem xcopy /Y /S /E /H /R /C simple-e-commerce-v3\*.* %doc3-simple-e-commerce-v3%\ Insufficient memory
+robocopy simple-e-commerce-v3 %doc3-simple-e-commerce-v3%\ /E /MIR /Z /XD "D:\patrick\github-com\simple-e-commerce-v3\frontend\node_modules"
+copy /Y simple-e-commerce-v3\pom.xml %doc3-simple-e-commerce-v3%
+copy /Y simple-e-commerce-v3\README.MD %doc3-simple-e-commerce-v3%
+
+echo 'Copy current simple-e-commerce-v3 to doc3\... done!'
