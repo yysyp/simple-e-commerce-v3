@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HttpsConnectorConfig {
 
-    @Value("${server.originhttp.port}")
-    private int serverPortHttp;
-
-    @Value("${server.port}")
-    private int serverPortHttps;
+//    @Value("${server.originhttp.port}")
+//    private int serverPortHttp;
+//
+//    @Value("${server.port}")
+//    private int serverPortHttps;
 
     //https --> http
 //    @Bean
@@ -35,28 +35,28 @@ public class HttpsConnectorConfig {
 //        return factory;
 //    }
 
-    private Connector redirectConnector() {
-        Connector connector = new Connector(Http11NioProtocol.class.getName());
-        connector.setScheme("http");
-        connector.setPort(serverPortHttp);
-        connector.setSecure(false);
-        connector.setRedirectPort(serverPortHttps);
-        return connector;
-    }
-
-
-    //Support both http and https
-    @Bean
-    public ServletWebServerFactory servletContainer() {
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
-        return tomcat;
-    }
-
-    private Connector createStandardConnector() {
-        Connector connector = new Connector(Http11NioProtocol.class.getName());
-        connector.setPort(serverPortHttp);
-        return connector;
-    }
+//    private Connector redirectConnector() {
+//        Connector connector = new Connector(Http11NioProtocol.class.getName());
+//        connector.setScheme("http");
+//        connector.setPort(serverPortHttp);
+//        connector.setSecure(false);
+//        connector.setRedirectPort(serverPortHttps);
+//        return connector;
+//    }
+//
+//
+//    //Support both http and https
+//    @Bean
+//    public ServletWebServerFactory servletContainer() {
+//        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+//        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
+//        return tomcat;
+//    }
+//
+//    private Connector createStandardConnector() {
+//        Connector connector = new Connector(Http11NioProtocol.class.getName());
+//        connector.setPort(serverPortHttp);
+//        return connector;
+//    }
 
 }

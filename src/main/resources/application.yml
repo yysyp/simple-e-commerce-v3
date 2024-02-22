@@ -5,9 +5,9 @@ server:
     key-store-password: simpledemo.sp
     key-alias: simpledemo
     enabled: false
-  port: 8443
-  originhttp:
-    port: 8080
+  port: 8080
+#  originhttp:
+#    port: 8080
 
 spring:
   application:
@@ -63,11 +63,6 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   type-aliases-package: ps.demo.entity
-
-springdoc:
-  api-docs.enabled: false
-  swagger-ui:
-    enabled: false
 
 ---
 
