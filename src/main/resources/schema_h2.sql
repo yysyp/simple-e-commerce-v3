@@ -86,3 +86,13 @@ CREATE TABLE my_mock (
   body TEXT,
   created_at TIMESTAMP
 );
+
+DROP TABLE IF EXISTS upload_download_excel;
+CREATE TABLE upload_download_excel (
+id INT PRIMARY KEY AUTO_INCREMENT,
+first_name VARCHAR(50),
+last_name VARCHAR(50),
+age INT,
+score DECIMAL(10,2)
+);
+

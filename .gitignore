@@ -39,3 +39,4 @@ target/
 .mvn
 /tmp/
 
+/upload-folder/
