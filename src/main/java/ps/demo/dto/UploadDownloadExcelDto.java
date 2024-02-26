@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class UploadDownloadExcelDto implements Serializable {
 
