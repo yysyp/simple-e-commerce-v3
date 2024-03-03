@@ -1,0 +1,16 @@
+[# th:with="entityName=${entityJson.get('name')}+${entitySuffix},
+entityKey=${#strings.unCapitalize(entityName)},
+daoName=${entityName}+${daoSuffix},
+daoKey=${#strings.unCapitalize(daoName)},
+serviceName=${entityName}+${serviceSuffix},
+serviceKey=${#strings.unCapitalize(serviceName)},
+dtoName=${entityName}+${dtoSuffix},
+dtoKey=${#strings.unCapitalize(dtoName)},
+controllerName=${entityName}+${controllerSuffix},
+controllerKey=${#strings.unCapitalize(controllerName)},
+reqName=${entityName}+${reqSuffix},
+reqKey=${#strings.unCapitalize(reqName)},
+respName=${entityName}+${respSuffix},
+respKey=${#strings.unCapitalize(respName)},
+entityAttrs=${entityJson.get('attrs').values}
+"]

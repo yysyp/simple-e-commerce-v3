@@ -2,10 +2,13 @@ package ps.demo.common;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 
 public class StringTool {
@@ -256,6 +259,16 @@ public class StringTool {
             }
         }
         return null;
+    }
+
+    public static void printOut(Collection c, PrintStream out) {
+        if (CollectionUtils.isEmpty(c)) {
+            out.println("[]");
+        }
+        int i = 0;
+        for (Object o : c) {
+            out.println("["+i+++"] " + o);
+        }
     }
 
 }

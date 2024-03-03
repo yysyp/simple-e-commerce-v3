@@ -63,6 +63,14 @@
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
             <version>3.5.5</version>
         </dependency>
+
+<!--        mybatis generator... -->
+<!--        <dependency>-->
+<!--            <groupId>com.baomidou</groupId>-->
+<!--            <artifactId>mybatis-plus-generator</artifactId>-->
+<!--            <version>3.5.5</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -153,11 +161,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/ognl/ognl -->
         <dependency>
             <groupId>ognl</groupId>
             <artifactId>ognl</artifactId>
-            <version>3.2.10</version>
+            <version>3.3.4</version>
         </dependency>
+
+
 
         <!--        <dependency>-->
         <!--            <groupId>org.apache.beam</groupId>-->
