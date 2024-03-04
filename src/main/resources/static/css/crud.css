@@ -1,0 +1,99 @@
+body {  }
+
+.error {
+    color: #FF0000;
+}
+.header-container {
+    text-align: center;
+}
+.content-root {
+    text-align: center;
+}
+.footer-container {
+    text-align: center;
+}
+form {
+  margin: 0px;
+}
+.form-container {
+  display: inline-block;
+}
+
+.form-container table {
+    table-layout: fixed;
+    word-break: break-all;
+    word-wrap: break-word;
+    width: 100%;
+}
+
+.form-container table td label {
+   margin-bottom: 0.5rem;
+}
+
+.loginForm .toright {
+    text-align: right;
+}
+.loginForm .toleft {
+    text-align: left;
+}
+.loginForm .tocenter {
+    text-align: center;
+}
+
+.query-container {
+    margin-bottom: 0.5rem;
+}
+.query-container > span {
+  display: inline-block;
+}
+
+.list-container {
+
+}
+
+.list {
+  display: inline-block;
+  width: 95%;
+  overflow: auto;
+}
+
+.list-table {
+  width: 100%;
+  table-layout: fixed;
+  word-break: break-all;
+}
+
+.list-navigator {
+  display: inline-block;
+  right: 5%;
+  width: 95%;
+  text-align: right;
+}
+
+.list-navigator > span {
+    display: inline-block;
+}
+
+#navigateToFirstPage { cursor:pointer; }
+#navigateToPreviousPage { cursor:pointer; }
+#navigateToNextPage { cursor:pointer; }
+#navigateToLastPage { cursor:pointer; }
+.list-navigator > span.enabled {
+color: #00F;
+}
+.list-navigator > span.disabled {
+color: #000;
+}
+
+td {
+    border-width: 1px;
+}
+td.toright {
+    border-width: 0px;
+}
+td.toleft {
+    border-width: 0px;
+}
+td.tocenter {
+    border-width: 0px;
+}
