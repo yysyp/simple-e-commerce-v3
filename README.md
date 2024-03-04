@@ -9,7 +9,7 @@
 
 
 # simple-e-commerce-v3
-This is a simple e-commerce demo based on springboot framework in Java 11
+This is a simple e-commerce demo based on springboot framework in Java 17
 This application uses H2 memory database, and provide Restful APIs to show
 a simple e-commerce scenarios including:
 1. adding product to cart.
@@ -18,7 +18,7 @@ a simple e-commerce scenarios including:
 4. placing an order.
 
 ### Build prerequisites:
-- JDK: OpenJDK 11 installed
+- JDK: OpenJDK 17 installed
 - Set JAVA_HOME, environment variables and add OpenJDK path to system environment variable, make sure java command is working
 
 ### Build steps:
@@ -26,7 +26,7 @@ a simple e-commerce scenarios including:
 2. Run command to go to "target" folder: ```cd target```
 3. start up application: ```java -jar simple-e-commerce-v3-1.0.0.jar```
 4. Application started when you see "ps.demo.WebServerApplication - Started WebServerApplication" message.
-5. Open your browser and navigate to the swagger doc page: http://localhost:8080/springdoc/index.html
+5. Open your browser and navigate to the swagger doc page: http://localhost:8080/swagger-ui/index.html
 6. On the swagger doc page, for each API you can click "Try it out" to call the API.
 7. The seed data has been initiated in H2 database, so you can use below parameters: 
 - userId: 1 to 3
@@ -35,9 +35,9 @@ a simple e-commerce scenarios including:
 
 ### Other URLs for reference: 
 - Home index page: http://localhost:8080/
-- API swagger doc: http://localhost:8080/springdoc/index.html
-- OpenAPI in JSON format: http://localhost:8080/springdoc/api-docs
-- OpenAPI in YAML format: http://localhost:8080/springdoc/api-docs.yaml
+- API swagger doc: http://localhost:8080/swagger-ui/index.html
+- OpenAPI in JSON format: http://localhost:8080/swagger-ui/api-docs
+- OpenAPI in YAML format: http://localhost:8080/swagger-ui/api-docs.yaml
 - H2 database console: http://localhost:8080/h2-console
 
 ### This application is based on memory H2 database, follow below steps to login to H2 database:
@@ -50,19 +50,13 @@ a simple e-commerce scenarios including:
 7. Click "Connect" button.
 8. You will be able to see the tables in left, and you can run SQL on the right panel.
 
-### This is just a simple demo, there are still a lot can be improved, for now just, I will just stop here:
-1. http to https
-2. user authentication & authorization
-3. data query logic & database sql to optimize
-4. Use constructor injection instead of using @Autowired. Unit testing. etc.
-
 ### Start with docker:
 - docker build -t app:v1 -f Dockerfile .
 - docker run --name app --rm -itd -p:8080:8080 app:v1
 - docker build -t app:v1 -f script/Dockerfile .
 - docker stop app
 
-###
+### Other additional functions
 #Mock usage:
 1): http://localhost:8080/mock/create-mock to create mock.
 2): http://localhost:8080/mock/api/{YourMockUri} to use the created mock.
@@ -85,3 +79,21 @@ curl -X 'POST' \
 
 And to use the mock:
 curl --location --request GET 'http://localhost:8080/mock/api/myrest-api'
+
+#Code generator usage:
+This code generator is using thymeleaf template script to generate code.
+This code generator will keep track the generated code files' MD5, if generated file
+has not changed, then if you regenerate, the new generated files will overwrite the old ones.
+The templates config folder is: tfsource
+And steps as below:
+1) Config the "entityJson" property in: tfsource/tf.properties
+2) Config the "packageName" and "moduleName"
+3) Run the "src/main/java/pslab/MyCodeGenerator.java" code will be generated.
+
+#Code generator templates tool:
+This tool is for generating the thymeleaf template files for above "#Code generator"
+Steps:
+1) Update the code in: "src/main/java/ps/demo/mytftemplate" AND "src/main/resources/templates/mytftemplate"
+2) Run the "src/main/java/pslab/MyTfTemplateGeneratorForCodeGenerator.java" to generate the thymeleaf template files to: tfsource
+
+
