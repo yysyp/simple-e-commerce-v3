@@ -6,7 +6,7 @@ import lombok.ToString;
 
 import java.util.Date;
 
-import ps.demo.common.MyBaseEntity;
+import ps.demo.common.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

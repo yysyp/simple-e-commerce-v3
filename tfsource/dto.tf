@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.*;
 import java.math.*;
-import ps.demo.common.MyBaseDto;
+import ps.demo.common.BaseDto;
 import lombok.*;
 import java.util.*;
 import java.math.*;

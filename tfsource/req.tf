@@ -4,7 +4,7 @@ import lombok.*;
 import java.util.*;
 import java.math.*;
 
-import ps.demo.common.MyPageReq;
+import ps.demo.common.BasePageReq;
 
 
 @ToString

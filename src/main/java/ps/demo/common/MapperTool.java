@@ -159,4 +159,13 @@ public class MapperTool {
             return seen.putIfAbsent(keys, Boolean.TRUE) == null;
         };
     }
+
+    public static void copyProperties(Object source, Object target) {
+        convert(source, target);
+        //BeanUtils.copyProperties(source, target);
+    }
+
+    public static <T> List<T> copyAndConvertItems(Collection srcList, Class<T> targetItemType) {
+        return convert(srcList, targetItemType);
+    }
 }
