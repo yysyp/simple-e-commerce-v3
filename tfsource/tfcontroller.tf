@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
-import ps.demo.common.BaseController;
-import ps.demo.common.BasePageReq;
-import ps.demo.common.BasePageResData;
-import ps.demo.common.BaseResData;
+import ps.demo.common.*;
 import [(${packageName}+'.'+${moduleName}+'.'+${dtoFolder})].[(${dtoName})];
 import [(${packageName}+'.'+${moduleName}+'.'+${dtoFolder})].[(${reqName})];
 import [(${packageName}+'.'+${moduleName}+'.'+${serviceFolder})].[(${serviceName})];
@@ -141,6 +138,21 @@ public class [(${controllerName})] extends BaseController {
         return BaseResData.builder().data(updated[(${dtoName})]).build();
     }
 
+    @Operation(summary = "To query the data by req using and equal logic for req fields",
+            description = "i.e: <pre>" +
+                    "{\n" +
+                    "  \"current\": 1,\n" +
+                    "  \"size\": 10,\n" +
+                    "  \"orderBys\": [\n" +
+                    "    {\n" +
+                    "      \"key\": \"id\",\n" +
+                    "      \"asc\": true\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"field\": \"xxx\"\n" +
+                    "}"+
+                    "</pre>"
+    )
     @PostMapping("/rf-query")
     public BasePageResData queryRestful(@RequestBody [(${reqName})] [(${reqKey})]) {
         Pageable pageable = constructPagable([(${reqKey})]);
@@ -158,6 +170,12 @@ public class [(${controllerName})] extends BaseController {
     public BaseResData getByIdRestful(@PathVariable("id") Long id) {
         [(${dtoName})] [(${dtoKey})] = [(${serviceKey})].findById(id);
         return BaseResData.builder().data([(${dtoKey})]).build();
+    }
+
+    @DeleteMapping("/rf-delete/{id}")
+    public BaseResponse deleteByIdRestful(@PathVariable("id") Long id) {
+        [(${serviceKey})].deleteById(id);
+        return BaseResponse.success();
     }
 
 }

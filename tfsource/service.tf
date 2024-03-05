@@ -70,6 +70,9 @@ public class [(${serviceName})] {
 
     public [(${dtoName})] findById(Long id) {
         Optional<[(${entityName})]> [(${entityKey})]Optional = [(${daoKey})].findById(id);
+        if ([(${entityKey})]Optional.isEmpty()) {
+            return null;
+        }
         [(${dtoName})] [(${dtoKey})] = new [(${dtoName})]();
         [(${entityKey})]Optional.ifPresent(e -> {
             MapperTool.copyProperties(e, [(${dtoKey})]);

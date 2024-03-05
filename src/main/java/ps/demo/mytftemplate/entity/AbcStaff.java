@@ -2,14 +2,20 @@
 
 package ps.demo.mytftemplate.entity;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Date;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import java.util.*;
+import java.math.*;
+
+import lombok.*;
+import java.util.*;
+import java.math.*;
+import jakarta.persistence.*;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -17,24 +23,24 @@ import java.util.Date;
 @Entity
 @Table(name = "abc_staff")
 public class AbcStaff implements java.io.Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long id;
-    protected String createdBy;
-    protected Instant createdOn;
-    protected Boolean isActive;
-    protected Boolean isLogicalDeleted;
-    protected String modifiedBy;
-    protected Instant modifiedOn;
+    private Long id;
+    private String createdBy;
+    private Instant createdOn;
+    private Boolean isActive;
+    private Boolean isLogicalDeleted;
+    private String modifiedBy;
+    private Instant modifiedOn;
+
 
     private String firstName;
     private String lastName;
     private Integer age;
     private BigDecimal score;
     private Boolean passed;
-    private String comments;
     private Date birthday;
+    private String comments;
 
 
 }
