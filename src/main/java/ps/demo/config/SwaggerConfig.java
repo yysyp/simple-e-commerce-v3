@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     private License license() {
         return new License()
-                .name("MIT")
-                .url("https://opensource.org/licenses/MIT");
+                .name("Haha H2")
+                .url("/h2-console");
     }
 
     private Info info(){
@@ -24,8 +24,8 @@ public class SwaggerConfig {
     }
     private ExternalDocumentation externalDocumentation() {
         return new ExternalDocumentation()
-                .description("extra description")
-                .url("http://localhost:8080/swagger-ui/index.html#/");
+                .description("Home Page")
+                .url("/");
     }
 
     @Bean

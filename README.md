@@ -1,11 +1,23 @@
+## This is a sample Java project, It is using H2 memory mode DB, baomidou mybatis-plus and JPA. 
+## So you should not need to pre-setup any DB or any config, just run "WebServerApplication.java".
+## Below features are implemented by "baomidou mybatis-plus" and the table schema is in: src/main/resources/schema_h2.sql, which will be automatically initialized during springboot startup:
+1. Simple e-commerce APIs like: Product, Cart, Order, Payment.
+2. Mock API which allows you to create a Restful API mocker by calling the Restful API: '/mock/create-mock'
+3. Excel download and upload: "/api/excel/download" and "/api/excel/upload"
+## Below features are implemented by "Spring JPA" and no table schema is needed, during springboot starting it will create table base on the jakarta.persistence.Entity:
+1. "mytftemplate/AbcStaff", and the URI: "/api/mytftemplate/abc-staff" is for accessing the CRUD operations from Jquery based page.
+2. Currently the "pslab/MyCodeGenerator.java" automation tool generated feature is using "Spring JPA".
+
+
 ### This can be used as a project prototype for single Java Springboot project initialization.
 ### For multiple different modules, acting as quick check quick code snippet poc, you can use "sampleall".
-### Replace Steps:
+### Replace Steps & Start Service:
 1. Replace "simple-e-commerce-v3" with "new-proj-id"
 2. Remove .mvn , mvnw , mvnw.cmd
 3. Remove "<repositories>" in the pom.xml
 4. Refactor "ps.demo" to "com.xx.yy.zz"
 5. Replace "ps.demo" with "com.xx.yy.zz"
+6. Start springboot: src/main/java/ps/demo/WebServerApplication.java
 
 
 # simple-e-commerce-v3
@@ -39,6 +51,8 @@ a simple e-commerce scenarios including:
 - OpenAPI in JSON format: http://localhost:8080/swagger-ui/api-docs
 - OpenAPI in YAML format: http://localhost:8080/swagger-ui/api-docs.yaml
 - H2 database console: http://localhost:8080/h2-console
+- Sample CRUD: http://localhost:8080/api/mytftemplate/abc-staff
+- 
 
 ### This application is based on memory H2 database, follow below steps to login to H2 database:
 1. In browser open URL: http://localhost:8080/h2-console
@@ -49,6 +63,12 @@ a simple e-commerce scenarios including:
 6. No password so, "Password" leave it empty.
 7. Click "Connect" button.
 8. You will be able to see the tables in left, and you can run SQL on the right panel.
+9. And also there is an additional H2 DB, and the connection info is:
+    Snd Data Source:
+    Driver Class: org.h2.Driver
+    JDBC URL: jdbc:h2:mem:snd;MODE=MYSQL
+    User Name: sa
+    Password:
 
 ### Start with docker:
 - docker build -t app:v1 -f Dockerfile .
@@ -56,7 +76,7 @@ a simple e-commerce scenarios including:
 - docker build -t app:v1 -f script/Dockerfile .
 - docker stop app
 
-### Other additional functions
+### Restful Mocker:
 #Mock usage:
 1): http://localhost:8080/mock/create-mock to create mock.
 2): http://localhost:8080/mock/api/{YourMockUri} to use the created mock.
@@ -80,6 +100,7 @@ curl -X 'POST' \
 And to use the mock:
 curl --location --request GET 'http://localhost:8080/mock/api/myrest-api'
 
+### "Thymeleaf-Controller-Service-JPA Repository" Code Generator:
 #Code generator usage:
 This code generator is using thymeleaf template script to generate code.
 This code generator will keep track the generated code files' MD5, if generated file
@@ -90,6 +111,7 @@ And steps as below:
 2) Config the "packageName" and "moduleName"
 3) Run the "src/main/java/pslab/MyCodeGenerator.java" code will be generated.
 
+### Code Generator Template Maker:
 #Code generator templates tool:
 This tool is for generating the thymeleaf template files for above "#Code generator"
 Steps:

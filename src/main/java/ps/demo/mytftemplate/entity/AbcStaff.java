@@ -2,7 +2,6 @@
 
 package ps.demo.mytftemplate.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
