@@ -1,15 +1,29 @@
 package ps.demo.common;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BaseController {
+
+    public final static String DATE_FORMAT_STR_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+
+    @InitBinder
+    protected void init(HttpServletRequest request, ServletRequestDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_STR_ISO8601);
+        dateFormat.setLenient(true);
+        binder.registerCustomEditor(Date.class, new TheCustomDateEditor(dateFormat, true));
+    }
 
     protected Pageable constructPagable(BasePageReq BasePageReq) {
         List<BasePageReq.OrderBy> orderByList = BasePageReq.getOrderBys();

@@ -121,10 +121,10 @@ public class AbcStaffServiceImpl {
                 Predicate predicate = null;
                 if (orLike) {
 //                    [# th:if="${attr.get('type') eq 'String'}"]
-//                    predicate = orLike(predicate, cb, root,"firstName", abcStaff.getFirstName());
+                    predicate = orLike(predicate, cb, root,"firstName", abcStaff.getFirstName());
 //                    [/]
 //                    [# th:unless="${attr.get('type') eq 'String'}"]
-//                    predicate = orEqual(predicate, cb, root,"firstName", abcStaff.getFirstName());
+                    predicate = orEqual(predicate, cb, root,"firstName", abcStaff.getFirstName());
 //                    [/]
                 } else {
                     predicate = andEqual(predicate, cb, root, "firstName", abcStaff.getFirstName());

@@ -22,7 +22,7 @@
 
 <div class="content-root">
 
-    <form id="queryform" th:action="@{/api/company/abc-staff/list}" method="POST" th:object="${abcStaffModel.abcStaffReq}">
+    <form id="queryform" th:action="@{/api/mytftemplate/abc-staff/list}" method="POST" th:object="${abcStaffModel.abcStaffReq}">
         <div class="query-container">
             <span>Keyword:</span>
             <span>
@@ -32,7 +32,7 @@
                 <input type="submit" value="Query"/>
             </span>
             <span>
-                <input type="hidden" name="createaction" th:value="@{/api/company/abc-staff/form}">
+                <input type="hidden" name="createaction" th:value="@{/api/mytftemplate/abc-staff/form}">
                 <input type="button" name="createbutton" value="Create" />
             </span>
         </div>
@@ -63,9 +63,9 @@
                     </tr>
                     <tr th:each="abcStaffDto:${abcStaffModel.page.list}">
                         <td style="white-space: nowrap;">
-                            <a th:href="@{'/api/company/abc-staff/'+${abcStaffDto.id}}" title="View Detail">[V]</a>&nbsp;
-                            <a th:href="@{'/api/company/abc-staff/remove/'+${abcStaffDto.id}}" title="Delete">[D]</a>&nbsp;
-                            <a th:href="@{'/api/company/abc-staff/modify/'+${abcStaffDto.id}}" title="Modify">[M]</a>
+                            <a th:href="@{'/api/mytftemplate/abc-staff/'+${abcStaffDto.id}}" title="View Detail">[V]</a>&nbsp;
+                            <a th:href="@{'/api/mytftemplate/abc-staff/remove/'+${abcStaffDto.id}}" title="Delete">[D]</a>&nbsp;
+                            <a th:href="@{'/api/mytftemplate/abc-staff/modify/'+${abcStaffDto.id}}" title="Modify">[M]</a>
                         </td>
                         <td th:text="${abcStaffDto.id}"></td>
                         
@@ -84,7 +84,7 @@
             </div>
         </form>
 
-        <form id="navigatorform" th:action="@{/api/company/abc-staff/list}" method="POST" th:object="${abcStaffModel.abcStaffReq}">
+        <form id="navigatorform" th:action="@{/api/mytftemplate/abc-staff/list}" method="POST" th:object="${abcStaffModel.abcStaffReq}">
             <div class="list-navigator">
                 <input id="navigatorKey" type="hidden" name="key" value="" />
                 <span th:text="'Total Pages (' + ${abcStaffModel.page.pages} + ')'"></span>&nbsp;&nbsp;

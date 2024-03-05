@@ -20,13 +20,13 @@
 </head>
 <body>
 <div th:replace="~{fragments/header::header}"></div>
-<a th:href="@{/api/company/abc-staff}">[List]</a>
+<a th:href="@{/api/mytftemplate/abc-staff}">[List]</a>
 
 <div class="content-root">
 
 <div class="content-root">
     <div class="form-container">
-        <form id="modifyform" th:action="@{/api/company/abc-staff/modify}" method="POST"
+        <form id="modifyform" th:action="@{/api/mytftemplate/abc-staff/modify}" method="POST"
               th:object="${abcStaffModel.abcStaffDto}">
             <input type="hidden" name="id" th:value="*{id}">
 
