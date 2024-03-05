@@ -17,7 +17,7 @@ public class MyTfTemplateGeneratorForCodeGenerator {
     public static void main(String[] args) throws Exception {
         List<String> list = FileUtils.readLines(new File("tfsource/tmlfTfmakeReplacement.properties"), Charset.forName("UTF-8"));
         //"\\Q" + tobeEscapedRegex + "\\E"
-        processFile(list, new File("tfsource/controller.tf"));
+        processFile(list, new File("tfsource/tfcontroller.tf"));
         processFile(list, new File("tfsource/dao.tf"));
         processFile(list, new File("tfsource/dto.tf"));
         processFile(list, new File("tfsource/entity.tf"));
