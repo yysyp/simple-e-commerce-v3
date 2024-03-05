@@ -14,7 +14,7 @@ import java.math.*;
 @Getter
 @Setter
 @ToString
-public class [(${dtoName})] extends MyBaseDto {
+public class [(${dtoName})] extends BaseDto {
 [# th:each="attr,attrStat:${entityAttrs}" ]
     private [(${attr.get('type')})] [(${attr.get('name')})];
 [/]

@@ -13,7 +13,7 @@ import ps.demo.common.BasePageReq;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class [(${reqName})] extends MyPageReq {
+public class [(${reqName})] extends BasePageReq {
     private String key;
 [# th:each="attr,attrStat:${entityAttrs}" ]
     private [(${attr.get('type')})] [(${attr.get('name')})];

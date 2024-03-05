@@ -26,14 +26,14 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMap;
 import org.springframework.transaction.annotation.Transactional;
-import ps.demo.order.repository.NewCartRepository;
+
 import [(${packageName}+'.'+${moduleName}+'.'+${dtoFolder})].[(${dtoName})];
 import [(${packageName}+'.'+${moduleName}+'.'+${dtoFolder})].[(${reqName})];
 import [(${packageName}+'.'+${moduleName}+'.'+${entityFolder})].[(${entityName})];
 import [(${packageName}+'.'+${moduleName}+'.'+${daoFolder})].[(${daoName})];
-import ps.demo.util.MyBeanUtil;
+import ps.demo.common.MapperTool;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 
 import lombok.*;
 
@@ -50,9 +50,9 @@ public class [(${serviceName})] {
     @Transactional
     public [(${dtoName})] save([(${dtoName})] [(${dtoKey})]) {
         [(${entityName})] [(${entityKey})] = new [(${entityName})]();
-        MyBeanUtil.copyProperties([(${dtoKey})], [(${entityKey})]);
+        MapperTool.copyProperties([(${dtoKey})], [(${entityKey})]);
         [(${entityName})] entity = [(${daoKey})].save([(${entityKey})]);
-        MyBeanUtil.copyProperties(entity, [(${dtoKey})]);
+        MapperTool.copyProperties(entity, [(${dtoKey})]);
         return [(${dtoKey})];
     }
 
@@ -72,7 +72,7 @@ public class [(${serviceName})] {
         Optional<[(${entityName})]> [(${entityKey})]Optional = [(${daoKey})].findById(id);
         [(${dtoName})] [(${dtoKey})] = new [(${dtoName})]();
         [(${entityKey})]Optional.ifPresent(e -> {
-            MyBeanUtil.copyProperties(e, [(${dtoKey})]);
+            MapperTool.copyProperties(e, [(${dtoKey})]);
         });
         return [(${dtoKey})];
     }
@@ -85,7 +85,7 @@ public class [(${serviceName})] {
             }
         };
         List<[(${entityName})]> [(${entityKey})]List = [(${daoKey})].findAll(spec);
-        return MyBeanUtil.copyAndConvertItems([(${entityKey})]List, [(${dtoName})].class);
+        return MapperTool.copyAndConvertItems([(${entityKey})]List, [(${dtoName})].class);
     }
 
     //@Transactional(readOnly = true)
@@ -94,7 +94,7 @@ public class [(${serviceName})] {
         List<[(${dtoName})]> [(${dtoKey})]List = new ArrayList<>();
         for ([(${entityName})] [(${entityKey})] : [(${entityKey})]List) {
             [(${dtoName})] [(${dtoKey})] = new [(${dtoName})]();
-            MyBeanUtil.copyProperties([(${entityKey})], [(${dtoKey})]);
+            MapperTool.copyProperties([(${entityKey})], [(${dtoKey})]);
             [(${dtoKey})]List.add([(${dtoKey})]);
         }
         return [(${dtoKey})]List;
@@ -104,7 +104,7 @@ public class [(${serviceName})] {
         Page<[(${entityName})]> page = [(${daoKey})].findAll(pageable);
         Page<[(${dtoName})]> pageDto = page.map((e) -> {
             [(${dtoName})] [(${dtoKey})] = new [(${dtoName})]();
-            MyBeanUtil.copyProperties(e, [(${dtoKey})]);
+            MapperTool.copyProperties(e, [(${dtoKey})]);
             return [(${dtoKey})];
         });
         return pageDto;
@@ -112,21 +112,21 @@ public class [(${serviceName})] {
 
     public List<[(${dtoName})]> findByAttributes([(${dtoName})] [(${dtoKey})], boolean orLike) {
         [(${entityName})] [(${entityKey})] = new [(${entityName})]();
-        MyBeanUtil.copyProperties([(${dtoKey})], [(${entityKey})]);
+        MapperTool.copyProperties([(${dtoKey})], [(${entityKey})]);
         Specification<[(${entityName})]> spec = constructSpecification([(${entityKey})], orLike);
         List<[(${entityName})]> [(${entityKey})]List = [(${daoKey})].findAll(spec);
-        return MyBeanUtil.copyAndConvertItems([(${entityKey})]List, [(${dtoName})].class);
+        return MapperTool.copyAndConvertItems([(${entityKey})]List, [(${dtoName})].class);
     }
 
     public Page<[(${dtoName})]> findByAttributesInPage([(${dtoName})] [(${dtoKey})], boolean orLike, Pageable pageable) {
         [(${entityName})] [(${entityKey})] = new [(${entityName})]();
-        MyBeanUtil.copyProperties([(${dtoKey})], [(${entityKey})]);
+        MapperTool.copyProperties([(${dtoKey})], [(${entityKey})]);
         Specification<[(${entityName})]> spec = constructSpecification([(${entityKey})], orLike);
 
         Page<[(${entityName})]> page = [(${daoKey})].findAll(spec, pageable);
         Page<[(${dtoName})]> pageDto = page.map((e) -> {
             [(${dtoName})] [(${dtoKey})]Result = new [(${dtoName})]();
-            MyBeanUtil.copyProperties(e, [(${dtoKey})]Result);
+            MapperTool.copyProperties(e, [(${dtoKey})]Result);
             return [(${dtoKey})]Result;
         });
         return pageDto;

@@ -16,27 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
-import ps.demo.common.MyBaseController;
+import ps.demo.common.BaseController;
 import ps.demo.common.BasePageReq;
 import ps.demo.common.BasePageResData;
 import [(${packageName}+'.'+${moduleName}+'.'+${dtoFolder})].[(${dtoName})];
 import [(${packageName}+'.'+${moduleName}+'.'+${dtoFolder})].[(${reqName})];
 import [(${packageName}+'.'+${moduleName}+'.'+${serviceFolder})].[(${serviceName})];
-import ps.demo.util.MyBeanUtil;
+import ps.demo.common.MapperTool;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.*;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.math.*;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/[(${moduleName})]/[(${uriName})]")
-public class [(${controllerName})] extends MyBaseController {
+public class [(${controllerName})] extends BaseController {
 
     @Autowired
     private [(${serviceName})] [(${serviceKey})];
@@ -53,7 +53,7 @@ public class [(${controllerName})] extends MyBaseController {
         [# th:each="attr,attrStat:${entityAttrs}" ][# th:if="${attr.get('type') eq 'Boolean'}"]
         [(${dtoKey})].set[(${#strings.capitalizeWords(attr.get('name'))})](null != request.getParameter("[(${attr.get('name')})]"));[/][/]
 
-        MyBeanUtil.copyProperties([(${reqKey})], [(${dtoKey})]);
+        MapperTool.copyProperties([(${reqKey})], [(${dtoKey})]);
         initBaseCreateModifyTs([(${dtoKey})]);
         [(${dtoName})] [(${entityKey})]Result = [(${serviceKey})].save([(${dtoKey})]);
         return new ModelAndView("redirect:/api/[(${moduleName})]/[(${uriName})]");
@@ -70,7 +70,7 @@ public class [(${controllerName})] extends MyBaseController {
         model.addAttribute("[(${reqKey})]", [(${reqKey})]);
         Pageable pageable = constructPagable([(${reqKey})]);
         Page<[(${dtoName})]> [(${dtoKey})]Page = [(${serviceKey})].findInPage(pageable);
-        MyPageResData<[(${dtoName})]> myPageResData = new MyPageResData<>([(${dtoKey})]Page,
+        BasePageResData<[(${dtoName})]> myPageResData = new BasePageResData<>([(${dtoKey})]Page,
                 [(${reqKey})].getCurrent(), [(${reqKey})].getSize());
         model.addAttribute("[(${reqKey})]", [(${reqKey})]);
         model.addAttribute("page", myPageResData);
@@ -95,9 +95,9 @@ public class [(${controllerName})] extends MyBaseController {
             [(${dtoKey})].set[(${#strings.capitalizeWords(attr.get('name'))})](percentWrapKey);[/][/]
 
         }
-        //MyBeanUtil.copyProperties([(${reqKey})], [(${dtoKey})]);
+        //MapperTool.copyProperties([(${reqKey})], [(${dtoKey})]);
         Page<[(${dtoName})]> [(${dtoKey})]Page = [(${serviceKey})].findByAttributesInPage([(${dtoKey})], true, pageable);
-        MyPageResData<[(${dtoName})]> myPageResData = new MyPageResData<>([(${dtoKey})]Page,
+        BasePageResData<[(${dtoName})]> myPageResData = new BasePageResData<>([(${dtoKey})]Page,
                 [(${reqKey})].getCurrent(), [(${reqKey})].getSize());
         model.addAttribute("[(${reqKey})]", [(${reqKey})]);
         model.addAttribute("page", myPageResData);
