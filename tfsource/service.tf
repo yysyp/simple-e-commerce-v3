@@ -144,7 +144,9 @@ public class [(${serviceName})] {
 
                 } else {
                 [# th:each="attr,attrStat:${entityAttrs}" ]
-                    predicate = andEqual(predicate, cb, root, "[(${attr.get('name')})]", [(${entityKey})].get[(${#strings.capitalizeWords(attr.get('name'))})]());
+                    if (null != [(${entityKey})].get[(${#strings.capitalizeWords(attr.get('name'))})]()) {
+                        predicate = andEqual(predicate, cb, root, "[(${attr.get('name')})]", [(${entityKey})].get[(${#strings.capitalizeWords(attr.get('name'))})]());
+                    }
                 [/]
                 }
 
@@ -159,9 +161,9 @@ public class [(${serviceName})] {
             return predicate;
         }
         if (null == predicate) {
-            return cb.or(cb.equal(root.get(attributeName), attributeValue));
+            return cb.and(cb.equal(root.get(attributeName), attributeValue));
         } else {
-            return cb.or(predicate, cb.equal(root.get(attributeName), attributeValue));
+            return cb.and(predicate, cb.equal(root.get(attributeName), attributeValue));
         }
     }
     private Predicate orEqual(Predicate predicate, CriteriaBuilder cb, Root<[(${entityName})]> root, String attributeName, Object attributeValue) {

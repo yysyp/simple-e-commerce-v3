@@ -15,6 +15,7 @@ import ps.demo.common.BasePageReq;
 @AllArgsConstructor
 public class [(${reqName})] extends BasePageReq {
     private String key;
+
 [# th:each="attr,attrStat:${entityAttrs}" ]
     private [(${attr.get('type')})] [(${attr.get('name')})];
 [/]

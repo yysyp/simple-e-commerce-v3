@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -130,7 +131,7 @@ public class [(${controllerName})] extends BaseController {
 
 
     /* ------------ PURE RESTFUL APIs SEPARATING LINE ------------ */
-    @PostMapping(value = "/save-or-update")
+    @PostMapping(value = "/rf-save-or-update")
     public BaseResData saveOrUpdateRestful(@RequestBody [(${dtoName})] [(${dtoKey})], HttpServletRequest request) {
         initBaseCreateModifyTs([(${dtoKey})]);
         [# th:each="attr,attrStat:${entityAttrs}" ][# th:if="${attr.get('type') eq 'Boolean'}"]
@@ -140,26 +141,20 @@ public class [(${controllerName})] extends BaseController {
         return BaseResData.builder().data(updated[(${dtoName})]).build();
     }
 
-    @PostMapping("/query")
+    @PostMapping("/rf-query")
     public BasePageResData queryRestful(@RequestBody [(${reqName})] [(${reqKey})]) {
         Pageable pageable = constructPagable([(${reqKey})]);
         [(${dtoName})] [(${dtoKey})] = new [(${dtoName})]();
-        String key = [(${reqKey})].getKey();
-        if (StringUtils.isNotBlank(key)) {
-            String percentWrapKey = "%" + key + "%";
-            [# th:each="attr,attrStat:${entityAttrs}" ][# th:if="${attr.get('type') eq 'String'}"]
-            [(${dtoKey})].set[(${#strings.capitalizeWords(attr.get('name'))})](percentWrapKey);[/][/]
 
-        }
-        //MapperTool.copyProperties([(${reqKey})], [(${dtoKey})]);
-        Page<[(${dtoName})]> [(${dtoKey})]Page = [(${serviceKey})].findByAttributesInPage([(${dtoKey})], true, pageable);
+        MapperTool.copyProperties([(${reqKey})], [(${dtoKey})]);
+        Page<[(${dtoName})]> [(${dtoKey})]Page = [(${serviceKey})].findByAttributesInPage([(${dtoKey})], false, pageable);
         BasePageResData<[(${dtoName})]> myPageResData = new BasePageResData<>([(${dtoKey})]Page,
                 [(${reqKey})].getCurrent(), [(${reqKey})].getSize());
 
         return myPageResData;
     }
 
-    @GetMapping("/get-by-id/{id}")
+    @GetMapping("/rf-get-by-id/{id}")
     public BaseResData getByIdRestful(@PathVariable("id") Long id) {
         [(${dtoName})] [(${dtoKey})] = [(${serviceKey})].findById(id);
         return BaseResData.builder().data([(${dtoKey})]).build();
