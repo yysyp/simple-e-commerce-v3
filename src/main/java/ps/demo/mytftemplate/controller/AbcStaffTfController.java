@@ -11,12 +11,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import ps.demo.common.BaseController;
 import ps.demo.common.BasePageResData;
+import ps.demo.common.BaseResData;
 import ps.demo.common.MapperTool;
 import ps.demo.mytftemplate.dto.AbcStaffDto;
 import ps.demo.mytftemplate.dto.AbcStaffReq;
@@ -142,6 +144,64 @@ public class AbcStaffTfController extends BaseController {
         abcStaffServiceImpl.deleteById(id);
         return new ModelAndView("redirect:/api/mytftemplate/abc-staff");
     }
+
+    /* ------------ PURE RESTFUL APIs SEPARATING LINE ------------ */
+    @PostMapping(value = "/save-or-update")
+    public BaseResData saveOrUpdateRestful(@RequestBody AbcStaffDto abcStaffDto, HttpServletRequest request) {
+        initBaseCreateModifyTs(abcStaffDto);
+
+
+
+
+
+
+        abcStaffDto.setPassed(null != request.getParameter("passed"));
+
+
+
+
+        AbcStaffDto updatedAbcStaffDto = abcStaffServiceImpl.save(abcStaffDto);
+
+        return BaseResData.builder().data(updatedAbcStaffDto).build();
+    }
+
+    @PostMapping("/query")
+    public BasePageResData query(@RequestBody AbcStaffReq abcStaffReq) {
+        Pageable pageable = constructPagable(abcStaffReq);
+        AbcStaffDto abcStaffDto = new AbcStaffDto();
+        String key = abcStaffReq.getKey();
+        if (StringUtils.isNotBlank(key)) {
+            String percentWrapKey = "%" + key + "%";
+
+
+            abcStaffDto.setFirstName(percentWrapKey);
+
+
+            abcStaffDto.setLastName(percentWrapKey);
+
+
+
+
+
+            abcStaffDto.setComments(percentWrapKey);
+
+
+
+        }
+        //MyBeanUtil.copyProperties(abcStaffReq, abcStaffDto);
+        Page<AbcStaffDto> abcStaffDtoPage = abcStaffServiceImpl.findByAttributesInPage(abcStaffDto, true, pageable);
+        BasePageResData<AbcStaffDto> myPageResData = new BasePageResData<>(abcStaffDtoPage,
+                abcStaffReq.getCurrent(), abcStaffReq.getSize());
+
+        return myPageResData;
+    }
+
+    @GetMapping("/get-by-id/{id}")
+    public BaseResData getById(@PathVariable("id") Long id) {
+        AbcStaffDto abcStaffDto = abcStaffServiceImpl.findById(id);
+        return BaseResData.builder().data(abcStaffDto).build();
+    }
+
 
 }
 

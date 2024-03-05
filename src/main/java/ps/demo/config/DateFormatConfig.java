@@ -4,13 +4,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import ps.demo.common.ProjConstant;
 
 import java.io.IOException;
@@ -20,6 +23,13 @@ import java.util.Date;
 @Configuration
 public class DateFormatConfig {
 
+//    @Bean
+//    @Primary
+//    public ObjectMapper primaryObjectMapper() {
+//        return JsonMapper.builder().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+//                .addModule(new JavaTimeModule()).build();
+//    }
+
     @Bean
     public ObjectMapper getObjectMapper() {
         SimpleModule simpleModule = new SimpleModule();
@@ -28,6 +38,7 @@ public class DateFormatConfig {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(simpleModule);
+        objectMapper.registerModule(new JavaTimeModule()); //JDK8 Date Time
         return objectMapper;
     }
 

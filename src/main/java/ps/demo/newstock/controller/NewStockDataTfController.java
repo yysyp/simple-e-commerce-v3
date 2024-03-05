@@ -136,6 +136,7 @@ public class NewStockDataTfController extends BaseController {
         return new ModelAndView("redirect:/api/newstock/new-stock-data");
     }
 
+
 }
 
 

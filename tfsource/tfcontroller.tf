@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ps.demo.common.BaseController;
 import ps.demo.common.BasePageReq;
 import ps.demo.common.BasePageResData;
+import ps.demo.common.BaseResData;
 import [(${packageName}+'.'+${moduleName}+'.'+${dtoFolder})].[(${dtoName})];
 import [(${packageName}+'.'+${moduleName}+'.'+${dtoFolder})].[(${reqName})];
 import [(${packageName}+'.'+${moduleName}+'.'+${serviceFolder})].[(${serviceName})];
@@ -125,6 +126,43 @@ public class [(${controllerName})] extends BaseController {
     public ModelAndView remove(@PathVariable("id") Long id) {
         [(${serviceKey})].deleteById(id);
         return new ModelAndView("redirect:/api/[(${moduleName})]/[(${uriName})]");
+    }
+
+
+    /* ------------ PURE RESTFUL APIs SEPARATING LINE ------------ */
+    @PostMapping(value = "/save-or-update")
+    public BaseResData saveOrUpdateRestful(@RequestBody [(${dtoName})] [(${dtoKey})], HttpServletRequest request) {
+        initBaseCreateModifyTs([(${dtoKey})]);
+        [# th:each="attr,attrStat:${entityAttrs}" ][# th:if="${attr.get('type') eq 'Boolean'}"]
+        [(${dtoKey})].set[(${#strings.capitalizeWords(attr.get('name'))})](null != request.getParameter("[(${attr.get('name')})]"));[/][/]
+
+        [(${dtoName})] updated[(${dtoName})] = [(${serviceKey})].save([(${dtoKey})]);
+        return BaseResData.builder().data(updated[(${dtoName})]).build();
+    }
+
+    @PostMapping("/query")
+    public BasePageResData queryRestful(@RequestBody [(${reqName})] [(${reqKey})]) {
+        Pageable pageable = constructPagable([(${reqKey})]);
+        [(${dtoName})] [(${dtoKey})] = new [(${dtoName})]();
+        String key = [(${reqKey})].getKey();
+        if (StringUtils.isNotBlank(key)) {
+            String percentWrapKey = "%" + key + "%";
+            [# th:each="attr,attrStat:${entityAttrs}" ][# th:if="${attr.get('type') eq 'String'}"]
+            [(${dtoKey})].set[(${#strings.capitalizeWords(attr.get('name'))})](percentWrapKey);[/][/]
+
+        }
+        //MapperTool.copyProperties([(${reqKey})], [(${dtoKey})]);
+        Page<[(${dtoName})]> [(${dtoKey})]Page = [(${serviceKey})].findByAttributesInPage([(${dtoKey})], true, pageable);
+        BasePageResData<[(${dtoName})]> myPageResData = new BasePageResData<>([(${dtoKey})]Page,
+                [(${reqKey})].getCurrent(), [(${reqKey})].getSize());
+
+        return myPageResData;
+    }
+
+    @GetMapping("/get-by-id/{id}")
+    public BaseResData getByIdRestful(@PathVariable("id") Long id) {
+        [(${dtoName})] [(${dtoKey})] = [(${serviceKey})].findById(id);
+        return BaseResData.builder().data([(${dtoKey})]).build();
     }
 
 }

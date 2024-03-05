@@ -64,6 +64,15 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   type-aliases-package: ps.demo.entity
 
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  packages-to-scan: ps.demo
+  show-actuator: false
+  model-and-view-allowed: true
+#  override-with-generic-response: true
+
 ---
 
 spring:
