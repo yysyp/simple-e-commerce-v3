@@ -113,9 +113,11 @@ And steps as below:
 
 ### Code Generator Template Maker:
 #Code generator templates tool:
-This tool is for generating the thymeleaf template files for above "#Code generator"
+This tool is for quick updating the thymeleaf template files for above "#Code generator"
+This is performing the replaces for all .tf template files in "tfsource/"
+The replaces is defined in "tfsource/tmlfTfmakeReplacement.properties"
 Steps:
 1) Update the code in: "src/main/java/ps/demo/mytftemplate" AND "src/main/resources/templates/mytftemplate"
-2) Run the "src/main/java/pslab/MyTfTemplateGeneratorForCodeGenerator.java" to generate the thymeleaf template files to: tfsource
-
+2) Copy the code content to related template in "tfsource/".
+3) Run the "src/main/java/pslab/MyTfTemplateGeneratorForCodeGenerator.java" to update the thymeleaf template files.
 

@@ -9,7 +9,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 /**
- * This is using company package.
+ * This is performing the replaces for all .tf template files in "tfsource/"
+ * The replaces is defined in "tfsource/tmlfTfmakeReplacement.properties"
  */
 public class MyTfTemplateGeneratorForCodeGenerator {
 
