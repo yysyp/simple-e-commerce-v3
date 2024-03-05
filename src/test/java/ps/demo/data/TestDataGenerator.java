@@ -6,6 +6,27 @@ import java.time.ZoneId;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+/**
+ *
+ CREATE TABLE abc_staff (
+ id BIGINT NOT NULL AUTO_INCREMENT,
+ created_by VARCHAR(255) NOT NULL,
+ created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ is_active BOOLEAN NOT NULL,
+ is_logical_deleted BOOLEAN NOT NULL,
+ modified_by VARCHAR(255) NOT NULL,
+ modified_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ first_name VARCHAR(255) NOT NULL,
+ last_name VARCHAR(255) NOT NULL,
+ age INT,
+ score DECIMAL(10, 2),
+ passed BOOLEAN,
+ birthday DATE,
+ comments TEXT,
+ PRIMARY KEY (id)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ */
 public class TestDataGenerator {
     public static void main(String[] args) {
         for (int i = 0; i < 11; i++) {
