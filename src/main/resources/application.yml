@@ -59,6 +59,9 @@ spring:
     type: jcache
     jcache:
       config: classpath:/ehcache3.xml
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
