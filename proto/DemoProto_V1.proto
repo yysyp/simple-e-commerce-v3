@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_package = "ps.demo.protobuf.model";
+option java_multiple_files = true;
+
+enum PeType {
+    INVALID = 0;
+    VALID = 1;
+}
+
+message Addr {
+    string line1 = 1;
+    string line2 = 2;
+    string line3 = 3;
+    int64 version = 4;
+}
+
+message Person {
+    string name = 1;
+    repeated string nickname = 2;
+    int32 id = 3;
+    string email = 4;
+    PeType peType = 5;
+    Addr addr = 6;
+}
+
+
+
+
+
