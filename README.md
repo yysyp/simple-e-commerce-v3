@@ -11,7 +11,7 @@
 
 ### This can be used as a project prototype for single Java Springboot project initialization.
 ### For multiple different modules, acting as quick check quick code snippet poc, you can use "sampleall".
-### Replace Steps & Start Service:
+### Rename & Replace Project Steps & Start Service:
 1. Replace "simple-e-commerce-v3" with "new-proj-id"
 2. Remove .mvn , mvnw , mvnw.cmd
 3. Remove "<repositories>" in the pom.xml

@@ -1,0 +1,68 @@
+1， Postman变量可以使用{{}}来引用，例如：{{baseUrl}}
+2， 一个请求执行完后可以运行一个脚本，只需要把脚本写在“Tests” tab里面。
+例如：
+let jsonData = JSON.parse(responseBody);
+tests["Has token"] = (typeof jsonData.token !== "undefined");
+if (jsonData.token !== undefined) {
+	console.log("token = "+jsonData.token);
+	postman.setEnvironmentVariable("token", jsonData.token);
+}
+
+这样Postman环境变量里面就有 token 这个值了。
+
+
+----------------------------------------------------------------------
+#Pre-request script:
+
+var host = "http://localhost:8080"
+pm.globals.set("host", host); //will generate a variable in "Environments > globals"
+
+
+#Postman provided dynamic variables
+{{$guid}}
+{{$timestamp}}
+{{$randomInt}}
+
+variable scope: global, collection, environment, data, local
+
+postman store and retrieve variable by:
+JSON.stringify(); JSON.parse();
+
+pm.globals.set('username', 123);
+pm.environments.set('username', 123)
+pm.variables.set('username', 123)
+pm.variables.unset('username')
+pm.collectionVariables.set('collectionVariable', 123)
+using variable: {{$username}}
+pm.environment.get("username");
+
+-----------------------------------------------------------------------
+pm.sendRequest("https://postman-aa.com/get", function(err, response) {
+	console.log(response.json());
+});
+pm.test("Status code is 200", function() {
+	pm.response.to.have.status(200);
+});
+pm.test("Successful POST request", function() {
+	pm.expect(pm.response.code).to.be.oneOf([201, 202]);
+});
+pm.test("Content-Type is present", function() {
+	pm.response.to.have.header("Content-Type");
+});
+pm.test("Body is correct", function() {
+	pm.response.to.have.body("responseBodyString");
+});
+pm.test("Body matches string", function() {
+	pm.expect(pm.response.text()).to.include("string you wnat to search");
+});
+pm.test("response time is less than 200ms", function() {
+	pm.expect(pm.response.responseTime).to.be.below(200);
+});
+pm.test("Data name is xiaoming", function() {
+	var jsonData = pm.response.json();
+	pm.expect(jsonData.data.name).eql("xiaoming");
+});
+
+
+
+

@@ -1,0 +1,18 @@
+
+
+Windows Power shell:
+wsl --update
+
+
+Docker Engine:
+Configure the Docker daemon by typing a json Docker daemon configuration file:
+{
+  "builder": {
+    "gc": {
+      "defaultKeepStorage": "20GB",
+      "enabled": true
+    }
+  },
+  "experimental": false,
+  "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn", "https://registry.docker-cn.com", "https://hub-mirror.c.163.com", "https://registry.cn-hangzhou.aliyuncs.com", "https://mirror.ccs.tencentyun.com"]
+}
