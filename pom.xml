@@ -228,8 +228,22 @@
             <version>3.25.3</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.30.2-GA</version>
+        </dependency>
 
-<!--        <dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>3.0.20</version>
+        </dependency>
+
+
+        <!--        <dependency>-->
 <!--            <groupId>cn.hutool</groupId>-->
 <!--            <artifactId>hutool-all</artifactId>-->
 <!--            <version>5.8.23</version>-->
