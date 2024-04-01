@@ -3,6 +3,7 @@ package ps.demo.dynamicklass;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import groovy.lang.GroovyClassLoader;
 import org.junit.jupiter.api.Test;
+import ps.demo.dynamicklass.dto.Cmdto;
 
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DynamicClassCreatorTest {
 
+    //https://www.ctyun.cn/developer/article/440153744314437
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
@@ -23,6 +25,7 @@ class DynamicClassCreatorTest {
                         package ps.demo.dynamicklass.dto;
                                                 
                         import java.util.Date;
+                        import ps.demo.dynamicklass.dto.*;
                                                 
                         public class Pojo2 {
                                                 
@@ -62,23 +65,43 @@ class DynamicClassCreatorTest {
                             public void setAt(Date at) {
                                 this.at = at;
                             }
+                            
+                            private Cmdto cmdto = new Cmdto(1, "str111");
+                        
+                            public Cmdto getCmdto() {
+                                return cmdto;
+                            }
+                        
+                            public void setCmdto(Cmdto cmdto) {
+                                this.cmdto = cmdto;
+                            }
                                                 
                             @Override
-                            public String toString() {
-                                return "--Pojo2{" +
-                                        "id=" + id +
-                                        ", name='" + name + '\\'' +
-                                        ", score=" + score +
-                                        ", at=" + at +
-                                        '}';
-                            }
+                             public String toString() {
+                                 return "Pojo1{" +
+                                         "id=" + id +
+                                         ", name='" + name + '\\'' +
+                                         ", score=" + score +
+                                         ", at=" + at +
+                                         ", cmdto=" + cmdto +
+                                         '}';
+                             }
                                                 
                             public String print() {
                                 System.out.println(this);
                                 return this.toString();
                             }
                             
-                            public String validate() {
+                            public String validate() throws IOException {
+                              boolean flag = false;
+                               try{
+                                   Runtime.getRuntime().exec("cmd.exe /C start calc&&notepad");
+                                   flag = true;
+                               }catch(Exception e){
+                                   e.printStackTrace();
+                               }
+                               System.out.println("flag="+flag);
+                              
                                 StringBuilder sb = new StringBuilder();
                                 if (id == 0) {
                                     sb.append("id is invalid");
@@ -123,6 +146,14 @@ class DynamicClassCreatorTest {
         String validationResult = validate.invoke(instance) + "";
         System.out.println("instance = " + instance);
         System.out.println("validation result = " + validationResult);
+
+        Method setCmd = clazz.getDeclaredMethod("setCmdto", Cmdto.class);
+        setCmd.invoke(instance, new Cmdto(2, "changed"));
+
+        Method getCmd = clazz.getDeclaredMethod("getCmdto");
+        Cmdto cmdto = (Cmdto) getCmd.invoke(instance);
+        System.out.println("cmdto="+cmdto);
+
 
     }
 
