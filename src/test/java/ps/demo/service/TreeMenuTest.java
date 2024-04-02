@@ -19,6 +19,7 @@ public class TreeMenuTest {
         for (String str : mockPaths) {
             System.out.println("mockPath = " + str);
         }
+
         List<List<String>> tbl = mockPaths.stream().map(e -> Lists.newArrayList(e.split("/"))).collect(Collectors.toList());
 
         TheTreeNode root = new TheTreeNode("", "root");
@@ -26,6 +27,7 @@ public class TreeMenuTest {
 
 
         for (int i = 0; i < level1List.size(); i++) {
+            int limit = tbl.get(0).size();
             String level1 = level1List.get(i);
             TheTreeNode treeNode1 = new TheTreeNode(level1, root.getKey()+"-"+i);
             root.addChild(treeNode1);
@@ -37,9 +39,9 @@ public class TreeMenuTest {
                 treeNode1.addChild(treeNode2);
 
 
-                constructLatest(treeNode2, tbl, level1, level2, 5);
+                constructLatest(treeNode2, tbl, level1, level2, limit);
 
-                constructHistorical(treeNode2, tbl, level1, level2, 5);
+                constructHistorical(treeNode2, tbl, level1, level2, limit);
 
             }
         }
@@ -85,13 +87,13 @@ public class TreeMenuTest {
 
             List<List<String>> subList = entry.getValue();
             if (CollectionUtils.isNotEmpty(subList) && level + 1 < limit) {
-                //int subLevel = level++;
                 constructTree(treeNode, groupBy(subList, level + 1, true), level + 1, limit, latest);
             } else {
+                List<String> copied = subList.get(0).stream().collect(Collectors.toList());
                 if (latest) {
-                    subList.get(0).set(2, "*");
+                    copied.set(2, "*");
                 }
-                treeNode.setData(String.join("/", subList.get(0)));
+                treeNode.setData(String.join("/", copied));
             }
         }
     }
@@ -117,13 +119,13 @@ public class TreeMenuTest {
 //        return sets;
 
         Set<String> sets = new HashSet<>();
-        sets.add("obj1/b1/20230122/n1/docn1");
+        sets.add("obj1/b1/20230122/n1/s1/docn1");
         //sets.add("obj1/b1/20230122/n1/docn1"); v2
-        sets.add("obj1/b2/20231102/n2/docn2");
-        sets.add("obj2/b1/20230104/n2/docn1");
-        sets.add("obj3/b1/20231212/n4/docn3");
-        sets.add("obj3/b1/20231231/n4/docn3");
-        sets.add("obj3/b2/20231103/n3/docn1");
+        sets.add("obj1/b2/20231102/n2/s2/docn2");
+        sets.add("obj2/b1/20230104/n2/s3/docn1");
+        sets.add("obj3/b1/20231212/n4/s4/docn3");
+        sets.add("obj3/b1/20231231/n4/s5/docn3");
+        sets.add("obj3/b2/20231103/n3/s1/docn1");
 
         return sets;
     }
