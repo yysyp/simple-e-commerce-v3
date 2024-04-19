@@ -1,5 +1,6 @@
 package ps.demo.common;
 
+import cn.hutool.http.ssl.TrustAnyHostnameVerifier;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -9,6 +10,7 @@ import org.apache.hc.client5.http.io.HttpClientConnectionManager;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
 import org.apache.hc.client5.http.ssl.TrustAllStrategy;
+import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
 import org.apache.hc.core5.ssl.SSLContexts;
 import org.apache.hc.core5.ssl.TrustStrategy;
 import org.springframework.core.ParameterizedTypeReference;
@@ -30,7 +32,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
-
 @Slf4j
 public class RestTemplateTool {
 
@@ -49,20 +50,27 @@ public class RestTemplateTool {
         private static final RestTemplateTool INSTANCE = new RestTemplateTool();
     }
 
-    public static RestTemplate getInstance() {
+    public static RestTemplateTool getInstance() {
+        return RestTemplateToolHolder.INSTANCE;
+    }
+
+    public static RestTemplate getRestTemplate() {
         return RestTemplateToolHolder.INSTANCE.restTemplate;
     }
 
     private RestTemplate initRestTemplate() throws Exception {
 
         final SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustAllStrategy()).build();
-        final SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder.create().setSslContext(sslcontext).build();
+        final SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder.create().setSslContext(sslcontext)
+                .setHostnameVerifier(new TrustAnyHostnameVerifier()).build();
         final HttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder.create().setSSLSocketFactory(sslSocketFactory).build();
         CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm).evictExpiredConnections().build();
 
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setHttpClient(httpClient);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
+        requestFactory.setConnectionRequestTimeout(5000);
+        requestFactory.setConnectTimeout(10000);
+        RestTemplate restTemplate = new RestTemplate(requestFactory); //getRequestFactory());
         restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
             public boolean hasError(ClientHttpResponse response) throws IOException {
@@ -106,11 +114,11 @@ public class RestTemplateTool {
     }
 
 
-
-    public String postSubmitFormMultiValueMapForStr(String url, HttpHeaders headers, MultiValueMap<String, Object> formMap) {
+    public ResponseEntity<String> postSubmitFormMultiValueMapForStr(String url, HttpHeaders headers, MultiValueMap<String, Object> formMap) {
         ParameterizedTypeReference<String> responseType = new ParameterizedTypeReference<String>() {
         };
-        return postSubmitFormMultiValueMapForT(url, headers, formMap, responseType).getBody();
+        ResponseEntity<String> responseEntity = postSubmitFormMultiValueMapForT(url, headers, formMap, responseType);
+        return responseEntity;
     }
 
     public <T> ResponseEntity<T> postSubmitFormMultiValueMapForT(String url, HttpHeaders headers, MultiValueMap<String, Object> formMap, ParameterizedTypeReference<T> responseType) {
@@ -127,10 +135,10 @@ public class RestTemplateTool {
         }
     }
 
-    public String postJsonStrForStr(String url, String jsonStr) {
+    public ResponseEntity<String> postJsonStrForStr(String url, String jsonStr) {
         ParameterizedTypeReference<String> responseType = new ParameterizedTypeReference<String>() {
         };
-        return postJsonStrForT(url, jsonStr, responseType).getBody();
+        return postJsonStrForT(url, jsonStr, responseType);
     }
 
     public <T> ResponseEntity<T> postJsonStrForT(String url, String jsonStr, ParameterizedTypeReference<T> responseType) {
@@ -150,10 +158,10 @@ public class RestTemplateTool {
         }
     }
 
-    public String getWithUriVariableObjectsForStr(String url, Object... uriVariables) {
+    public ResponseEntity<String> getWithUriVariableObjectsForStr(String url, Object... uriVariables) {
         ParameterizedTypeReference<String> responseType = new ParameterizedTypeReference<String>() {
         };
-        return getWithUriVariableObjectsForT(url, responseType, uriVariables).getBody();
+        return getWithUriVariableObjectsForT(url, responseType, uriVariables);
     }
 
     public <T> ResponseEntity<T> getWithUriVariableObjectsForT(String url, ParameterizedTypeReference<T> responseType, Object... uriVariables) {
@@ -166,21 +174,22 @@ public class RestTemplateTool {
      * "RestTemplate restTemplate = new RestTemplate();" to set the "restTemplate" attribute, it will work.
      * otherwise it will throw:
      * Caused by: java.lang.UnsupportedOperationException: getBody not supported
-     * 	at org.springframework.http.client.HttpComponentsStreamingClientHttpRequest.getBodyInternal(HttpComponentsStreamingClientHttpRequest.java:86)
-     * 	at org.springframework.http.client.AbstractClientHttpRequest.getBody(AbstractClientHttpRequest.java:47)
-     * 	at org.springframework.http.client.BufferingClientHttpRequestWrapper.executeInternal(BufferingClientHttpRequestWrapper.java:62)
-     * 	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
-     * 	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:53)
-     * 	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:109)
-     * 	at p.y.demo.restconfig.LogClientHttpRequestInterceptor.intercept(LogClientHttpRequestInterceptor.java:28)
-     * 	at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:93)
-     * 	at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:77)
-     * 	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
-     * 	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:53)
-     * 	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:739)
-     * 	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:674)
-     * 	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:612)
-     * 	at p.y.demo.restconfig.RestTemplateUtil.getForObject(RestTemplateUtil.java:85)
+     * at org.springframework.http.client.HttpComponentsStreamingClientHttpRequest.getBodyInternal(HttpComponentsStreamingClientHttpRequest.java:86)
+     * at org.springframework.http.client.AbstractClientHttpRequest.getBody(AbstractClientHttpRequest.java:47)
+     * at org.springframework.http.client.BufferingClientHttpRequestWrapper.executeInternal(BufferingClientHttpRequestWrapper.java:62)
+     * at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+     * at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:53)
+     * at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:109)
+     * at p.y.demo.restconfig.LogClientHttpRequestInterceptor.intercept(LogClientHttpRequestInterceptor.java:28)
+     * at org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:93)
+     * at org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:77)
+     * at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+     * at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:53)
+     * at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:739)
+     * at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:674)
+     * at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:612)
+     * at p.y.demo.restconfig.RestTemplateUtil.getForObject(RestTemplateUtil.java:85)
+     *
      * @param url
      * @param headers
      * @param responseType
@@ -204,6 +213,33 @@ public class RestTemplateTool {
         }
     }
 
+    public ResponseEntity<String> putBodyObjectForStr(String url, Object requestBody) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> request = new HttpEntity<>(requestBody, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                request,
+                String.class
+        );
+
+        return response;
+    }
+
+    public ResponseEntity<String> patchBodyObjectForStr(String url, Object requestBody) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> request = new HttpEntity<>(requestBody, headers);
+
+        return restTemplate.exchange(
+                url,
+                HttpMethod.PATCH,
+                request,
+                String.class
+        );
+    }
 
 
 
