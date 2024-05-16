@@ -1,49 +1,67 @@
 package ps.demo.easyexcel;
 
+import cn.hutool.core.lang.Console;
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.listener.ReadListener;
-import com.alibaba.excel.write.metadata.WriteSheet;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.SneakyThrows;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
-import ps.demo.common.RegexTool;
-import ps.demo.common.StringTool;
+import org.apache.commons.lang3.StringUtils;
+import ps.demo.common.FileTool;
+
 
 import java.io.File;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
 
     @SneakyThrows
     public static void main(String[] args) {
+        Gson gson = new Gson();
 
-        String filename = "C:\\Users\\Dell\\myexcel002.xlsx";
+        //Generate random pojo data.
+        List<DemoData> demoDataList =
+                IntStream.range(1, 11).mapToObj(i -> DemoData.builder()
+                                .id(i).sno(RandomUtils.nextInt(100, 200))
+                                .sname(RandomStringUtils.randomAlphabetic(5))
+                                .age(RandomUtils.nextInt(18, 35)).build())
+                        .collect(Collectors.toList());
 
-//        EasyExcel.write(filename, DemoData.class).sheet("Data list").needHead(true).doWrite(Main.getData());
-//
-//        List<DemoData> list = new ArrayList<>();
-//        EasyExcel.read(filename, DemoData.class, new ReadListener<DemoData>() {
-//            @Override
-//            public void invoke(DemoData o, AnalysisContext analysisContext) {
-//                list.add(o);
-//            }
-//
-//            @Override
-//            public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-//                //done!
-//            }
-//        }).sheet().headRowNumber(1).doRead();
-//
-//        System.out.println("-->(1)Read excel result=" + list);
+        //Save to Excel
+        File file = new File("demo-data-"+System.currentTimeMillis()+".xlsx");
+        EasyExcel.write(file, DemoData.class).sheet("DemoData").needHead(true).doWrite(demoDataList);
 
-        List<LinkedHashMap<String, Object>> dataList = new ArrayList<>();
-        EasyExcel.read(filename, new AnalysisEventListener<Map<String, Object>>() {
+
+        //Read the Excel file to List<DemoData>
+        List<DemoData> readList = new ArrayList<>();
+        EasyExcel.read(file, DemoData.class, new ReadListener<DemoData>() {
+            @Override
+            public void invoke(DemoData o, AnalysisContext analysisContext) {
+                readList.add(o);
+            }
+
+            @Override
+            public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+                //done!
+            }
+        }).charset(StandardCharsets.UTF_8).excelType(ExcelTypeEnum.XLSX).sheet(0).headRowNumber(1).doRead();
+        System.out.println("Read the Excel file to List<DemoData>------------------------------------");
+        Console.log("===data={}", gson.toJson(readList));
+
+
+        //Read the Excel file to List<LinkedHashMap<String, Object>>
+        List<LinkedHashMap<String, Object>> readListInListMap = new ArrayList<>();
+        EasyExcel.read(file, new AnalysisEventListener<Map<String, Object>>() {
             private Map<Integer, String> headMap;
 
             @Override
@@ -56,7 +74,7 @@ public class Main {
                 LinkedHashMap<String, Object> dataMap = new LinkedHashMap<>();
                 for (int i = 0, n = rowData.size(); i < n; i++) {
                     //String key = RegexTool.removeSymbols(""+headMap.get(i))+"_"+getExcelColumnName(i+1);
-                    String key = StringTool.excelNumToCol(i + 1);
+                    String key = getExcelColumnName(i + 1);
                     Object value = rowData.get(i);
 //                    int keyPrefix = 0;
 //                    String key1 = key;
@@ -66,37 +84,20 @@ public class Main {
 //                    }
                     dataMap.put(key, value);
                 }
-                dataList.add(dataMap);
+                readListInListMap.add(dataMap);
             }
 
             @Override
             public void doAfterAllAnalysed(AnalysisContext analysisContext) {
 
             }
-        }).sheet().headRowNumber(1).doRead();
+        }).charset(StandardCharsets.UTF_8).excelType(ExcelTypeEnum.XLSX).sheet(0).headRowNumber(1).doRead();
 
-        System.out.println("------------------------------------");
-        System.out.println("-->(2)Read excel dataList.0=" + dataList.get(0));
-        System.out.println("-->(2)Read excel dataList.size=" + dataList.size());
-        System.out.println("-->(2)Read excel dataList=" + dataList);
-        //Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
-        Gson gson = new Gson();
-        String json1 = gson.toJson(dataList);
-        System.out.println("-->(2)Read excel json1=" + json1);
+        System.out.println("Read the Excel file to List<LinkedHashMap<String, Object>>------------------------------------");
 
-        //FileUtils.delete(new File(filename));
-    }
+        Console.log("===data={}", gson.toJson(readListInListMap));
 
-    public static List<DemoData> getData() {
-        List<DemoData> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            DemoData demoData = new DemoData();
-            demoData.setSno(i);
-            demoData.setSname("Test" + i);
-            demoData.setAge(RandomUtils.nextInt(10, 90));
-            list.add(demoData);
-        }
-        return list;
+
     }
 
     public static String getExcelColumnName(int col) {
