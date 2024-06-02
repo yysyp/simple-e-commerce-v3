@@ -8,6 +8,8 @@ server:
   port: 8080
 #  originhttp:
 #    port: 8080
+  tomcat:
+    connection-timeout: 5000 # unit is ms
 
 spring:
   application:

@@ -55,6 +55,11 @@ public class UploadController {
     public String uploadFile(@RequestParam("file") MultipartFile file,
                              @RequestParam(value = "key", required = false) String key,
                                    HttpServletRequest req) {
+        try {
+            Thread.sleep(31*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (file == null) {
             throw new ClientErrorException(CodeEnum.BAD_REQUEST);
         }
