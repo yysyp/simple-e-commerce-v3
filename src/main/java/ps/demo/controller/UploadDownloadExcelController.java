@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +25,7 @@ import ps.demo.common.CodeEnum;
 import ps.demo.common.ServerErrorException;
 import ps.demo.dto.UploadDownloadExcelDto;
 import ps.demo.service.UploadDownloadExcelService;
+import ps.demo.validator.JakartaValidator;
 
 import java.awt.event.InputEvent;
 import java.io.BufferedInputStream;
@@ -41,6 +45,9 @@ public class UploadDownloadExcelController {
 
     @Autowired
     private UploadDownloadExcelService uploadDownloadExcelService;
+
+    @Autowired
+    private JakartaValidator<UploadDownloadExcelDto> validator;
 
     @Operation(summary = "Download a sample Excel file")
     @GetMapping("/download")
@@ -91,6 +98,19 @@ public class UploadDownloadExcelController {
                 public void doAfterAllAnalysed(AnalysisContext analysisContext) {
                 }
             }).sheet().headRowNumber(1).doRead();
+
+            List<String> validationMsgs = new ArrayList<>();
+            list.forEach( dto -> {
+                List<String> msg = validator.validate(dto);
+                validationMsgs.addAll(msg);
+            });
+
+            if (CollectionUtils.isNotEmpty(validationMsgs)) {
+                String errorMsg = StringUtils.abbreviate(StringUtils.join(validationMsgs), 100);
+                throw new ClientErrorException(CodeEnum.BAD_REQUEST, new IllegalArgumentException(
+                        errorMsg
+                ));
+            }
 
             uploadDownloadExcelService.saveExcelDtoList(list);
         } catch (IOException e) {

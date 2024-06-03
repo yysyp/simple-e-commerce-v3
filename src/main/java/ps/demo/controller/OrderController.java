@@ -22,6 +22,8 @@ public class OrderController extends BaseController {
     @Operation(summary = "Order to place order for current user's cart")
     @PostMapping("/place-order")
     public PlaceOrderResponse placeOrder(@RequestBody @Validated PlaceOrderRequest request) {
+
+
         PlaceOrderResponse response = orderService.placeOrder(request);
         return response;
 
