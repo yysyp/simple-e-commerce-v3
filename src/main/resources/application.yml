@@ -206,9 +206,9 @@ resilience4j.ratelimiter:
   configs:
     default:
       registerHealthIndicator: true
-      limitForPeriod: 1 #The number of permissions available during one limit refresh period
-      limitRefreshPeriod: 1s #The period of a limit refresh. After each period the rate limiter sets its permissions count back to the limitForPeriod value
-      timeoutDuration: 0 #The default wait time a thread waits for a permission
+      limitForPeriod: 1 #The number of permissions available during one limit refresh period (11 seconds)
+      limitRefreshPeriod: 11s #The period of a limit refresh. After each period the rate limiter sets its permissions count back to the limitForPeriod value
+      timeoutDuration: 3 #The default wait time a thread waits for a permission
       eventConsumerBufferSize: 100
   instances:
     backendA:
