@@ -16,7 +16,9 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.scheduling.annotation.EnableAsync;
+import ps.demo.config.ApiClientConfiguration;
 
 @Slf4j
 @SpringBootApplication
@@ -39,6 +41,11 @@ public class WebServerApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         log.info("ApplicationArguments is: {}", args);
+    }
+
+    @Bean
+    public ApiClientConfiguration apiClientConfiguration(ConfigurableEnvironment environment) {
+        return new ApiClientConfiguration(environment);
     }
 
 }

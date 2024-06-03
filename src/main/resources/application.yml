@@ -78,6 +78,15 @@ springdoc:
   model-and-view-allowed: true
 #  override-with-generic-response: true
 
+api:
+  clients:
+    - name: clienta
+      url: https://api.clienta
+      key: 123
+    - name: clientb
+      url: https://api.clientb
+      key: 456
+
 ---
 
 spring:
