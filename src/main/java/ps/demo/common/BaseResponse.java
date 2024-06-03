@@ -1,6 +1,8 @@
 package ps.demo.common;
 
 import lombok.*;
+import org.slf4j.MDC;
+import ps.demo.config.DateFormatConfig;
 
 import java.io.Serializable;
 
@@ -16,7 +18,9 @@ public class BaseResponse implements Serializable {
     @Builder.Default
     protected String message = CodeEnum.SUCCESS.getDetailedMessage();
     protected String detail;
-    protected String trace;
+    //public static final CorrelationIdFormatter DEFAULT = of("traceId(32),spanId(16)");
+    protected String traceId = MDC.get(ProjConstant.traceId);
+    protected String spanId = MDC.get(ProjConstant.spanId);
     protected String correlationId;
     protected String instance;
     @Builder.Default

@@ -11,6 +11,8 @@ public enum CodeEnum {
     INVALID_DATE("400", 200, "Invalid date time data"),
     INVALID_ID("400", 200, "Invalid ID"),
 
+    CALL_LATER("400", 200, "Backend has is busy in processing calls, please retry later"),
+
     // Server Error
     INTERNAL_SERVER_ERROR("500", 200, "Server error"),
     DUPLICATED_KEY("10000", 200, "Duplicated key"),

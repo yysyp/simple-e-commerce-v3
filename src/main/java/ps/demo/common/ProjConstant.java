@@ -30,7 +30,10 @@ public class ProjConstant {
 
     public static final String PENDING = "PENDING";
 
+    //public static final CorrelationIdFormatter DEFAULT = of("traceId(32),spanId(16)");
     public static final String traceId = "traceId"; // this is the name in MDC
+
+    public static final String spanId = "spanId";
 
     public static Date getNowDate() {
         return new Date();

@@ -1,7 +1,9 @@
 package ps.demo.config;
 
 
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -23,6 +25,8 @@ public class GlobalControllerExceptionHandler {
     public ResponseEntity<BaseResponse> constructResponseEntity(CodeEnum codeEnum, Exception e) {
         BaseResponse errorResponse = BaseResponse.of(codeEnum);
         errorResponse.setDetail(e.getMessage());
+        errorResponse.setTraceId(MDC.get(ProjConstant.traceId));
+        errorResponse.setSpanId(MDC.get(ProjConstant.spanId));
         HttpStatus httpStatus = HttpStatus.valueOf(codeEnum.getHttpCode());
         return new ResponseEntity<BaseResponse>(errorResponse, httpStatus);
     }
@@ -63,6 +67,14 @@ public class GlobalControllerExceptionHandler {
         errorResponse.setMessage(errors.toString());
         return new ResponseEntity<BaseResponse>(errorResponse, httpStatus);
     }
+
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<BaseResponse> handleThrowable(RequestNotPermitted e) {
+        log.error("Exception handleThrowable, message={}", e.getMessage(), e);
+        return constructResponseEntity(CodeEnum.CALL_LATER, e);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseResponse> handleThrowable(Exception e) {
