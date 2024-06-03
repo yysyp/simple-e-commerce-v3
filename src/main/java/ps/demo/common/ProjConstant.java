@@ -30,6 +30,8 @@ public class ProjConstant {
 
     public static final String PENDING = "PENDING";
 
+    public static final String traceId = "traceId"; // this is the name in MDC
+
     public static Date getNowDate() {
         return new Date();
     }
