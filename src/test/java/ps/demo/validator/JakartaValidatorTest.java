@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Console;
 import org.junit.jupiter.api.Test;
 import ps.demo.dto.UploadDownloadExcelDto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,9 +16,11 @@ class JakartaValidatorTest {
         JakartaValidator<UploadDownloadExcelDto> downloadExcelDtoJakartaValidator = new JakartaValidator<>();
 
         UploadDownloadExcelDto uploadDownloadExcelDto = UploadDownloadExcelDto.builder()
-                .firstName(" ")
-                .lastName("")
-                .age(-1).build();
+                .firstName("a ")
+                .lastName("s")
+                //.age(-1)
+                //.score(new BigDecimal("0.123"))
+                .build();
         List<String> msg = downloadExcelDtoJakartaValidator.validate(uploadDownloadExcelDto);
 
         Console.log("msg : {}", msg);

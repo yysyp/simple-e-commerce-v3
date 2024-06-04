@@ -6,7 +6,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
@@ -32,10 +35,13 @@ public class UploadDownloadExcelDto implements Serializable {
     private String lastName;
 
     @ExcelProperty(value = "age", index = 2)
+    @Nullable
     @Positive(message = "age must be positive number")
-    private int age;
+    private Integer age;
 
     @ExcelProperty(value = "score", index = 3)
+    @NotNull(message = "score should not be null")
+    @Digits(integer = 3, fraction = 2, message = "score should in ###.## format")
     private BigDecimal score;
 
 }
