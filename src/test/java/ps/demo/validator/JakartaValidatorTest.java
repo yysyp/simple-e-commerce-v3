@@ -19,7 +19,7 @@ class JakartaValidatorTest {
                 .firstName("a ")
                 .lastName("s")
                 //.age(-1)
-                //.score(new BigDecimal("0.123"))
+                .score(new BigDecimal("123.12")) //###.##
                 .build();
         List<String> msg = downloadExcelDtoJakartaValidator.validate(uploadDownloadExcelDto);
 
