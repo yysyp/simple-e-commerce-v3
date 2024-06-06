@@ -27,4 +27,24 @@ public class AsyncService {
         return CompletableFuture.completedFuture(random);
     }
 
+    @Async("taskExecutor")
+    @SneakyThrows
+    public CompletableFuture<String> asyncronizedCall2(Long sleep) {
+        try {
+            log.info("AsyncService call2 to sleep = {} seconds", sleep);
+            if (sleep == 999) {
+                throw new RuntimeException("Not allow to sleep 999");
+            }
+            Thread.sleep(sleep * 1000);
+            String random = RandomStringUtils.randomAlphanumeric(10);
+            log.info("AsyncService call2 return the random string={}, after sleep={}", random, sleep);
+        } catch (Exception ex) {
+            log.info("This is an asynchronous method, so exception will not be able to throw out, so have to capture in here", ex);
+            return CompletableFuture.failedFuture(ex);
+        }
+        //return AsyncResult.forValue("string1")
+        return new CompletableFuture<>();
+    }
+
+
 }
