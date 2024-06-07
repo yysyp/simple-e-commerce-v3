@@ -17,7 +17,7 @@ public class ThreadPoolConfig {
         executor.setQueueCapacity(25);
         executor.setKeepAliveSeconds(60); // idle thread live time (seconds)
         executor.setTaskDecorator(new MdcTaskDecorator());
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
         executor.setThreadNamePrefix("taskExecutor-");
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setAwaitTerminationSeconds(60);

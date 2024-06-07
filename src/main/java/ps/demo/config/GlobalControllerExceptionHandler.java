@@ -4,6 +4,7 @@ package ps.demo.config;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.core.task.TaskRejectedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -71,7 +72,13 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(RequestNotPermitted.class)
     public ResponseEntity<BaseResponse> handleThrowable(RequestNotPermitted e) {
-        log.error("Exception handleThrowable, message={}", e.getMessage(), e);
+        log.error("Exception handleThrowable, RequestNotPermitted message={}", e.getMessage(), e);
+        return constructResponseEntity(CodeEnum.CALL_LATER, e);
+    }
+
+    @ExceptionHandler(TaskRejectedException.class)
+    public ResponseEntity<BaseResponse> handleThrowable(TaskRejectedException e) {
+        log.error("Exception handleThrowable, TaskRejectedException message={}", e.getMessage(), e);
         return constructResponseEntity(CodeEnum.CALL_LATER, e);
     }
 
