@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This is the TestableMock example
+ * https://alibaba.github.io/testable-mock/#/
+ * https://github.com/alibaba/testable-mock/tree/master
  */
 @EnablePrivateAccess(srcClass = YamlTool.class)
 @MockDiagnose(LogLevel.VERBOSE)
