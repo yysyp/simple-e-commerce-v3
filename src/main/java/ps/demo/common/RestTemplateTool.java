@@ -10,11 +10,11 @@ import org.apache.hc.client5.http.io.HttpClientConnectionManager;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
 import org.apache.hc.client5.http.ssl.TrustAllStrategy;
-import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
 import org.apache.hc.core5.ssl.SSLContexts;
 import org.apache.hc.core5.ssl.TrustStrategy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -22,6 +22,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
+import ps.demo.config.LoggingRequestInterceptor;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +72,16 @@ public class RestTemplateTool {
         requestFactory.setHttpClient(httpClient);
         requestFactory.setConnectionRequestTimeout(5000);
         requestFactory.setConnectTimeout(10000);
+        RestTemplate restTemplate = initRestTemplate(requestFactory);
+        setCharset(restTemplate);
+        return restTemplate;
+    }
+
+    private RestTemplate initRestTemplate(HttpComponentsClientHttpRequestFactory requestFactory) {
         RestTemplate restTemplate = new RestTemplate(requestFactory); //getRequestFactory());
+        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+        interceptors.add(new LoggingRequestInterceptor());
+        restTemplate.setInterceptors(interceptors);
         restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
             public boolean hasError(ClientHttpResponse response) throws IOException {
@@ -82,7 +93,6 @@ public class RestTemplateTool {
                 //do nothing
             }
         });
-        setCharset(restTemplate);
         return restTemplate;
     }
 
@@ -128,6 +138,21 @@ public class RestTemplateTool {
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(formMap, headers);
         try {
             ResponseEntity<T> responseEntity = restTemplate.exchange(url, HttpMethod.POST, request, responseType);
+            return responseEntity;
+        } catch (Exception e) {
+            log.info("Rest call submitFormForObject error, url={}, message={}", url, e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public <T> ResponseEntity<T> postSubmitFormMultiValueMapWithUriVariableObjectsForT(String url, HttpHeaders headers, MultiValueMap<String, Object> formMap, ParameterizedTypeReference<T> responseType, Object... uriVariables) {
+        if (null == headers.getContentType()) {
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        }
+        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(formMap, headers);
+        try {
+            ResponseEntity<T> responseEntity = restTemplate.exchange(url, HttpMethod.POST, request, responseType, uriVariables);
             return responseEntity;
         } catch (Exception e) {
             log.info("Rest call submitFormForObject error, url={}, message={}", url, e.getMessage(), e);
