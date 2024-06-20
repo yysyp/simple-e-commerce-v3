@@ -5,9 +5,9 @@ server:
     key-store-password: simpledemo.sp
     key-alias: simpledemo
     enabled: false
-  port: 8080
+  port: 8084
 #  originhttp:
-#    port: 8080
+#    port: 8084
   tomcat:
     connection-timeout: 5000 # unit is ms
 

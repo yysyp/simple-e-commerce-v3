@@ -14,7 +14,7 @@ if (jsonData.token !== undefined) {
 ----------------------------------------------------------------------
 #Pre-request script:
 
-var host = "http://localhost:8080"
+var host = "http://localhost:8084"
 pm.globals.set("host", host); //will generate a variable in "Environments > globals"
 
 

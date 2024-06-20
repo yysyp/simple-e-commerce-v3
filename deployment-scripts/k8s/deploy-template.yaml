@@ -25,11 +25,11 @@ spec:
         - name: simple-e-commerce-v3
           image: "xxx.com/path/repo/simple-e-commerce-v3:THE_APP_VERSION"
           ports:
-            - containerPort: 8080
+            - containerPort: 8084
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 8080
+              port: 8084
             initialDelaySeconds: 3
             periodSeconds: 3
           env:
@@ -65,8 +65,8 @@ metadata:
     app: simple-e-commerce-v3
 spec:
   ports:
-    - port: 8080 # between containers for service call for K8s
-      targetPort: 8080 # container port
+    - port: 8084 # between containers for service call for K8s
+      targetPort: 8084 # container port
       nodePort: 30080 # by default >30000 for external call
   type: NodePort
   selector:
