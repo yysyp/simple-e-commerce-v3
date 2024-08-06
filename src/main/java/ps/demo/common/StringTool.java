@@ -261,6 +261,11 @@ public class StringTool {
         return null;
     }
 
+
+    public static void printOut(Collection c) {
+        printOut(c, System.out);
+    }
+
     public static void printOut(Collection c, PrintStream out) {
         if (CollectionUtils.isEmpty(c)) {
             out.println("[]");
@@ -270,5 +275,6 @@ public class StringTool {
             out.println("["+i+++"] " + o);
         }
     }
+
 
 }
