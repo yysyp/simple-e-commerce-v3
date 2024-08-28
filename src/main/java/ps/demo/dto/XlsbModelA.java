@@ -1,4 +1,4 @@
-package ps.demo.xlsbExcel;
+package ps.demo.dto;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;

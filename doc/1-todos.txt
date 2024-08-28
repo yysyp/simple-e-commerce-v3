@@ -1,0 +1,11 @@
+
+
+spring batch transaction behavior and setting.
+springboot annotation "@Component" inheritance.
+
+
+
+
+
+
+
