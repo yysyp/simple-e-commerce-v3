@@ -5,6 +5,9 @@ springboot annotation "@Component" inheritance.
 
 
 
+[step0 save file] --parameter(file_name)--> [step1 parse file] --> [step2 read, process, write]
+
+
 
 
 
